@@ -16,6 +16,7 @@ grant all privileges on caligula.* to 'caligula'@'%' identified by 'changenow';
 # This is actually the only fundamental thing that a Collector has to have
 # The table where we collect data from any data provider(system_id)
 # Default: we have 1 system_id that is this collector itself which will pull 2 classes of variables: (global_status,global_variables)
+        CREATE DATABASE IF NOT EXISTS caligula;
 	DROP TABLE IF EXISTS `caligula`.`collector_data`;
 	CREATE TABLE `caligula`.`collector_data` (
 	  `system_id` varchar(64) DEFAULT 'hostname',
