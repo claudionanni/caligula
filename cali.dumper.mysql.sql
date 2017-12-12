@@ -9,6 +9,7 @@ grant all privileges on caligula.* to 'caligula'@'%' identified by 'changenow';
 ####################################################################################################
 # Service Function
 ####################################################################################################
+DROP FUNCTION IF EXISTS _PRIVATE_SPLIT_STR;
 #Function used for the parameters in the Stored Procedures
 	CREATE FUNCTION caligula._PRIVATE_SPLIT_STR(
 	  x VARCHAR(255),
