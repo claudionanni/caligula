@@ -46,6 +46,7 @@ grant all privileges on caligula.* to 'caligula'@'%' identified by 'changenow';
 ####################################################################################################
 # Dumper: Purge function, default keep last 7 days
 ####################################################################################################
+# DELETE LAST 7 DAYS OF DATA AUTOMATICALLY. To do: Add control functions for this in the API procedure
 DROP PROCEDURE IF EXISTS caligula._PRIVATE_mysqldumper_purge_old_data;
 DELIMITER |
 	CREATE PROCEDURE caligula._PRIVATE_mysqldumper_purge_old_data(pDaysToPurge int)
