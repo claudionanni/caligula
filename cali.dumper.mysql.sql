@@ -50,7 +50,7 @@ DROP PROCEDURE IF EXISTS caligula._PRIVATE_mysqldumper_purge_old_data;
 DELIMITER |
 	CREATE PROCEDURE caligula._PRIVATE_mysqldumper_purge_old_data(pDaysToPurge int)
 	BEGIN
-          delete from collector_data where sample_timestamp<NOW() - INTERVAL pDaysToPurge MINUTE;
+          delete from collector_data where sample_timestamp<NOW() - INTERVAL pDaysToPurge DAY;
         END |
 DELIMITER ;
 
