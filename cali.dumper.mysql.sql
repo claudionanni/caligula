@@ -36,6 +36,7 @@ grant all privileges on caligula.* to 'caligula'@'%' identified by 'changenow';
               call caligula._PRIVATE_mysqldumper_dump_global_status;
               call caligula._PRIVATE_mysqldumper_dump_global_variables;
               call caligula._PRIVATE_mysqldumper_dump_processlist;
+	      call caligula._PRIVATE_mysqldumper_purge_old_data(7);
 	      END |
 	delimiter ;
 ####################################################################################################
@@ -43,9 +44,21 @@ grant all privileges on caligula.* to 'caligula'@'%' identified by 'changenow';
 
 
 ####################################################################################################
+# Dumper: Purge function, default keep last 7 days
+####################################################################################################
+DROP PROCEDURE IF EXISTS caligula._PRIVATE_mysqldumper_purge_old_data;
+DELIMITER |
+	CREATE PROCEDURE caligula._PRIVATE_mysqldumper_purge_old_data(pDaysToPurge int)
+	BEGIN
+          delete from collector_data where sample_timestamp<NOW() - INTERVAL pDaysToPurge MINUTE;
+        END |
+DELIMITER ;
+
+
+####################################################################################################
 # Dumper: mysql.localhost.3306, Class+Variable: mysql.information_schema.global_status
 ####################################################################################################
-
+DROP PROCEDURE IF EXISTS caligula._PRIVATE_mysqldumper_dump_global_status;
 DELIMITER |
 	CREATE PROCEDURE caligula._PRIVATE_mysqldumper_dump_global_status()
 	BEGIN
@@ -89,7 +102,7 @@ DELIMITER ;
 ####################################################################################################
 # DATA PROVIDER: mysql.information_schema.global_variables
 ####################################################################################################
-
+DROP PROCEDURE IF EXISTS caligula._PRIVATE_mysqldumper_dump_global_variables;
 DELIMITER |
 	CREATE PROCEDURE caligula._PRIVATE_mysqldumper_dump_global_variables()
 	BEGIN
@@ -125,7 +138,7 @@ DELIMITER ;
 ####################################################################################################
 # DATA PROVIDER: mysql.information_schema.processlist
 ####################################################################################################
-
+DROP PROCEDURE IF EXISTS caligula._PRIVATE_mysqldumper_dump_processlist;
 DELIMITER |
         CREATE PROCEDURE caligula._PRIVATE_mysqldumper_dump_processlist()
         BEGIN
@@ -163,7 +176,7 @@ DELIMITER ;
 ####################################################################################################
 # API: SCHEDULER CONTROL
 ####################################################################################################
-
+DROP PROCEDURE IF EXISTS caligula.mysqldumper;
 ## This is the API to control the scheduler on the agent
 DELIMITER |
 	CREATE PROCEDURE caligula.mysqldumper(pAllParams varchar(255))
